@@ -1,0 +1,37 @@
+# config.yaml
+# 配置实验的超参数、数据集类型及路径等设置
+
+experiment:
+  name: "混合精度与知识蒸馏实验"
+  epochs: 3
+  batch_size: 128
+  learning_rate: 0.0001
+  weight_decay: 1e-4
+  device: "cuda"         # "cuda" 或 "cpu"
+
+dataset:
+  # 数据集类型，只保留 imagenet
+  name: "imagenet"
+  data_dir_imagenet: "./data/imagenet"     # ImageNet原始数据目录
+
+model:
+  teacher_model: "resnet18"  # 教师模型（预训练的ResNet-18）
+  student_model: "simple_cnn"  # 学生模型（使用简单的CNN，可根据需求调整）
+  num_classes: 1000  # 直接设置为 ImageNet 的类别数
+
+distillation:
+  temperature: 4.0         # 蒸馏温度
+  alpha: 0.7               # 蒸馏损失权重
+
+mixed_precision:
+  use_amp: True            # 是否启用自动混合精度训练
+
+training:
+  gradient_accumulation_steps: 1
+  lr_scheduler: "constant"  # 学习率调度器类型，此处采用常量
+  lr_warmup_steps: 0
+  max_train_steps: null     # 若为null，则根据epochs自动计算
+
+logging:
+  logging_dir: "logs"
+  log_interval: 1         # 每隔多少步记录一次日志
